@@ -72,6 +72,13 @@ func (t *Template) HasWHOISRequest(n ...int) bool {
 	return HasRequest(t.RequestsWHOIS, n...)
 }
 
+// HasNTPRequest returns true if the template has an NTP request.
+//
+// If n is provided, it checks for more than n requests.
+func (t *Template) HasNTPRequest(n ...int) bool {
+	return HasRequest(t.RequestsNTP, n...)
+}
+
 // HasCodeRequest returns true if the template has a Code request.
 //
 // If n is provided, it checks for more than n requests.
@@ -157,7 +164,8 @@ func (template *Template) IsOriginScoped() bool {
 	}
 	if len(template.RequestsDNS)+len(template.RequestsFile)+len(template.RequestsNetwork)+
 		len(template.RequestsHeadless)+len(template.RequestsSSL)+len(template.RequestsWebsocket)+
-		len(template.RequestsWHOIS)+len(template.RequestsCode)+len(template.RequestsJavascript) > 0 {
+		len(template.RequestsWHOIS)+len(template.RequestsNTP)+len(template.RequestsCode)+
+		len(template.RequestsJavascript) > 0 {
 		return false
 	}
 	for _, request := range template.RequestsHTTP {

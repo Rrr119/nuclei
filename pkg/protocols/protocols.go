@@ -654,6 +654,8 @@ func MakeDefaultMatchFuncWithOptions(data map[string]interface{}, matcher *match
 		return matcher.Result(matcher.MatchDSLWithOptions(data, options)), nil
 	case matchers.XPathMatcher:
 		return matcher.Result(matcher.MatchXPath(item)), []string{}
+	case matchers.CIDRMatcher:
+		return matcher.ResultWithMatchedSnippet(matcher.MatchCIDR(item))
 	}
 	return false, nil
 }

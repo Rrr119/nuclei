@@ -38,6 +38,7 @@ var (
 	WEBSOCKETRequestDoc           encoder.Doc
 	WEBSOCKETInputDoc             encoder.Doc
 	WHOISRequestDoc               encoder.Doc
+	NTPRequestDoc                 encoder.Doc
 	CODERequestDoc                encoder.Doc
 	JAVASCRIPTRequestDoc          encoder.Doc
 	HTTPSignatureTypeHolderDoc    encoder.Doc
@@ -48,7 +49,7 @@ func init() {
 	TemplateDoc.Type = "Template"
 	TemplateDoc.Comments[encoder.LineComment] = " Template is a YAML input file which defines all the requests and"
 	TemplateDoc.Description = "Template is a YAML input file which defines all the requests and\n other metadata for a template."
-	TemplateDoc.Fields = make([]encoder.Doc, 20)
+	TemplateDoc.Fields = make([]encoder.Doc, 21)
 	TemplateDoc.Fields[0].Name = "id"
 	TemplateDoc.Fields[0].Type = "string"
 	TemplateDoc.Fields[0].Note = ""
@@ -126,44 +127,49 @@ func init() {
 	TemplateDoc.Fields[12].Note = ""
 	TemplateDoc.Fields[12].Description = "WHOIS contains the WHOIS request to make in the template."
 	TemplateDoc.Fields[12].Comments[encoder.LineComment] = "WHOIS contains the WHOIS request to make in the template."
-	TemplateDoc.Fields[13].Name = "code"
-	TemplateDoc.Fields[13].Type = "[]code.Request"
+	TemplateDoc.Fields[13].Name = "ntp"
+	TemplateDoc.Fields[13].Type = "[]ntp.Request"
 	TemplateDoc.Fields[13].Note = ""
-	TemplateDoc.Fields[13].Description = "Code contains code snippets."
-	TemplateDoc.Fields[13].Comments[encoder.LineComment] = "Code contains code snippets."
-	TemplateDoc.Fields[14].Name = "javascript"
-	TemplateDoc.Fields[14].Type = "[]javascript.Request"
+	TemplateDoc.Fields[13].Description = "NTP contains the NTP request to make in the template."
+	TemplateDoc.Fields[13].Comments[encoder.LineComment] = "NTP contains the NTP request to make in the template."
+	TemplateDoc.Fields[14].Name = "code"
+	TemplateDoc.Fields[14].Type = "[]code.Request"
 	TemplateDoc.Fields[14].Note = ""
-	TemplateDoc.Fields[14].Description = "Javascript contains the javascript request to make in the template."
-	TemplateDoc.Fields[14].Comments[encoder.LineComment] = "Javascript contains the javascript request to make in the template."
-	TemplateDoc.Fields[15].Name = "self-contained"
-	TemplateDoc.Fields[15].Type = "bool"
+	TemplateDoc.Fields[14].Description = "Code contains code snippets."
+	TemplateDoc.Fields[14].Comments[encoder.LineComment] = "Code contains code snippets."
+	TemplateDoc.Fields[15].Name = "javascript"
+	TemplateDoc.Fields[15].Type = "[]javascript.Request"
 	TemplateDoc.Fields[15].Note = ""
-	TemplateDoc.Fields[15].Description = "Self Contained marks Requests for the template as self-contained"
-	TemplateDoc.Fields[15].Comments[encoder.LineComment] = "Self Contained marks Requests for the template as self-contained"
-	TemplateDoc.Fields[16].Name = "stop-at-first-match"
+	TemplateDoc.Fields[15].Description = "Javascript contains the javascript request to make in the template."
+	TemplateDoc.Fields[15].Comments[encoder.LineComment] = "Javascript contains the javascript request to make in the template."
+	TemplateDoc.Fields[16].Name = "self-contained"
 	TemplateDoc.Fields[16].Type = "bool"
 	TemplateDoc.Fields[16].Note = ""
-	TemplateDoc.Fields[16].Description = "Stop execution once first match is found"
-	TemplateDoc.Fields[16].Comments[encoder.LineComment] = "Stop execution once first match is found"
-	TemplateDoc.Fields[17].Name = "signature"
-	TemplateDoc.Fields[17].Type = "http.SignatureTypeHolder"
+	TemplateDoc.Fields[16].Description = "Self Contained marks Requests for the template as self-contained"
+	TemplateDoc.Fields[16].Comments[encoder.LineComment] = "Self Contained marks Requests for the template as self-contained"
+	TemplateDoc.Fields[17].Name = "stop-at-first-match"
+	TemplateDoc.Fields[17].Type = "bool"
 	TemplateDoc.Fields[17].Note = ""
-	TemplateDoc.Fields[17].Description = "Signature is the request signature method\nWARNING: 'signature' will be deprecated and will be removed in a future release. Prefer using 'code' protocol for writing cloud checks"
-	TemplateDoc.Fields[17].Comments[encoder.LineComment] = "Signature is the request signature method"
-	TemplateDoc.Fields[17].Values = []string{
+	TemplateDoc.Fields[17].Description = "Stop execution once first match is found"
+	TemplateDoc.Fields[17].Comments[encoder.LineComment] = "Stop execution once first match is found"
+	TemplateDoc.Fields[18].Name = "signature"
+	TemplateDoc.Fields[18].Type = "http.SignatureTypeHolder"
+	TemplateDoc.Fields[18].Note = ""
+	TemplateDoc.Fields[18].Description = "Signature is the request signature method\nWARNING: 'signature' will be deprecated and will be removed in a future release. Prefer using 'code' protocol for writing cloud checks"
+	TemplateDoc.Fields[18].Comments[encoder.LineComment] = "Signature is the request signature method"
+	TemplateDoc.Fields[18].Values = []string{
 		"AWS",
 	}
-	TemplateDoc.Fields[18].Name = "variables"
-	TemplateDoc.Fields[18].Type = "variables.Variable"
-	TemplateDoc.Fields[18].Note = ""
-	TemplateDoc.Fields[18].Description = "Variables contains any variables for the current request."
-	TemplateDoc.Fields[18].Comments[encoder.LineComment] = "Variables contains any variables for the current request."
-	TemplateDoc.Fields[19].Name = "constants"
-	TemplateDoc.Fields[19].Type = "map[string]interface{}"
+	TemplateDoc.Fields[19].Name = "variables"
+	TemplateDoc.Fields[19].Type = "variables.Variable"
 	TemplateDoc.Fields[19].Note = ""
-	TemplateDoc.Fields[19].Description = "Constants contains any scalar constant for the current template"
-	TemplateDoc.Fields[19].Comments[encoder.LineComment] = "Constants contains any scalar constant for the current template"
+	TemplateDoc.Fields[19].Description = "Variables contains any variables for the current request."
+	TemplateDoc.Fields[19].Comments[encoder.LineComment] = "Variables contains any variables for the current request."
+	TemplateDoc.Fields[20].Name = "constants"
+	TemplateDoc.Fields[20].Type = "map[string]interface{}"
+	TemplateDoc.Fields[20].Note = ""
+	TemplateDoc.Fields[20].Description = "Constants contains any scalar constant for the current template"
+	TemplateDoc.Fields[20].Comments[encoder.LineComment] = "Constants contains any scalar constant for the current template"
 
 	MODELInfoDoc.Type = "model.Info"
 	MODELInfoDoc.Comments[encoder.LineComment] = " Info contains metadata information about a template"
@@ -476,6 +482,10 @@ func init() {
 		{
 			Key:   "cipher",
 			Value: "TLS cipher suite negotiated for the HTTP connection",
+		},
+		{
+			Key:   "key_exchange",
+			Value: "TLS key exchange group negotiated for the HTTP connection",
 		},
 		{
 			Key:   "sni",
@@ -998,7 +1008,7 @@ func init() {
 			FieldName: "pre-condition",
 		},
 	}
-	MATCHERSMatcherDoc.Fields = make([]encoder.Doc, 23)
+	MATCHERSMatcherDoc.Fields = make([]encoder.Doc, 24)
 	MATCHERSMatcherDoc.Fields[0].Name = "type"
 	MATCHERSMatcherDoc.Fields[0].Type = "MatcherTypeHolder"
 	MATCHERSMatcherDoc.Fields[0].Note = ""
@@ -1093,76 +1103,83 @@ func init() {
 	MATCHERSMatcherDoc.Fields[11].AddExample("XPath Matcher to check a title", []string{"/html/head/title[contains(text(), 'How to Find XPath')]"})
 
 	MATCHERSMatcherDoc.Fields[11].AddExample("XPath Matcher for finding links with target=\"_blank\"", []string{"//a[@target=\"_blank\"]"})
-	MATCHERSMatcherDoc.Fields[12].Name = "prompt"
-	MATCHERSMatcherDoc.Fields[12].Type = "string"
+	MATCHERSMatcherDoc.Fields[12].Name = "cidr"
+	MATCHERSMatcherDoc.Fields[12].Type = "[]string"
 	MATCHERSMatcherDoc.Fields[12].Note = ""
-	MATCHERSMatcherDoc.Fields[12].Description = "Prompt is the natural-language question for an llm matcher. The model\njudges the selected response part and returns a verdict; the matcher\nfires when the verdict equals Expect with at least MinConfidence.\n\n{{...}} placeholders are interpolated from the template variables,\n-var and target. Response derived values are not interpolated, since\nthe response is attacker controlled."
-	MATCHERSMatcherDoc.Fields[12].Comments[encoder.LineComment] = "Prompt is the natural-language question for an llm matcher. The model"
+	MATCHERSMatcherDoc.Fields[12].Description = "CIDR contains the CIDR ranges that the response part IP address must belong to.\nThe matched part is parsed as an IP address (or scanned for IP addresses) and\nthe matcher fires when any of them falls inside one of the given ranges."
+	MATCHERSMatcherDoc.Fields[12].Comments[encoder.LineComment] = "CIDR contains the CIDR ranges that the response part IP address must belong to."
 
-	MATCHERSMatcherDoc.Fields[12].AddExample("", "Is this a working admin login form rather than a marketing page?")
-	MATCHERSMatcherDoc.Fields[13].Name = "expect"
+	MATCHERSMatcherDoc.Fields[12].AddExample("Match for private IPv4 ranges", []string{"10.0.0.0/8", "192.168.0.0/16"})
+	MATCHERSMatcherDoc.Fields[13].Name = "prompt"
 	MATCHERSMatcherDoc.Fields[13].Type = "string"
 	MATCHERSMatcherDoc.Fields[13].Note = ""
-	MATCHERSMatcherDoc.Fields[13].Description = "Expect is the verdict that counts as a match for an llm matcher.\nDefaults to \"yes\"."
-	MATCHERSMatcherDoc.Fields[13].Comments[encoder.LineComment] = "Expect is the verdict that counts as a match for an llm matcher."
-	MATCHERSMatcherDoc.Fields[14].Name = "options"
-	MATCHERSMatcherDoc.Fields[14].Type = "[]string"
-	MATCHERSMatcherDoc.Fields[14].Note = ""
-	MATCHERSMatcherDoc.Fields[14].Description = "Options restricts the model to a fixed set of verdicts for an llm\nmatcher. Defaults to yes/no."
-	MATCHERSMatcherDoc.Fields[14].Comments[encoder.LineComment] = "Options restricts the model to a fixed set of verdicts for an llm"
-	MATCHERSMatcherDoc.Fields[15].Name = "min-confidence"
-	MATCHERSMatcherDoc.Fields[15].Type = "float64"
-	MATCHERSMatcherDoc.Fields[15].Note = ""
-	MATCHERSMatcherDoc.Fields[15].Description = "MinConfidence is the minimum confidence (0-1) an llm verdict needs to\ncount as a match. Defaults to 0."
-	MATCHERSMatcherDoc.Fields[15].Comments[encoder.LineComment] = "MinConfidence is the minimum confidence (0-1) an llm verdict needs to"
-	MATCHERSMatcherDoc.Fields[16].Name = "inputs"
-	MATCHERSMatcherDoc.Fields[16].Type = "[]string"
-	MATCHERSMatcherDoc.Fields[16].Note = ""
-	MATCHERSMatcherDoc.Fields[16].Description = "Inputs compares several responses instead of a single part, for\nchecks that are about the difference between responses (blind\nboolean injection, user enumeration, IDOR). Each entry is resolved\nagainst the runtime values, so {{body_1}} and {{body_2}} work with\nreq-condition, and each response is framed separately for the model.\nPart is ignored when Inputs is set."
-	MATCHERSMatcherDoc.Fields[16].Comments[encoder.LineComment] = "Inputs compares several responses instead of a single part, for"
+	MATCHERSMatcherDoc.Fields[13].Description = "Prompt is the natural-language question for an llm matcher. The model\njudges the selected response part and returns a verdict; the matcher\nfires when the verdict equals Expect with at least MinConfidence.\n\n{{...}} placeholders are interpolated from the template variables,\n-var and target. Response derived values are not interpolated, since\nthe response is attacker controlled."
+	MATCHERSMatcherDoc.Fields[13].Comments[encoder.LineComment] = "Prompt is the natural-language question for an llm matcher. The model"
 
-	MATCHERSMatcherDoc.Fields[16].AddExample("", []string{"{{body_1}}", "{{body_2}}"})
-	MATCHERSMatcherDoc.Fields[17].Name = "max-input-tokens"
-	MATCHERSMatcherDoc.Fields[17].Type = "int"
+	MATCHERSMatcherDoc.Fields[13].AddExample("", "Is this a working admin login form rather than a marketing page?")
+	MATCHERSMatcherDoc.Fields[14].Name = "expect"
+	MATCHERSMatcherDoc.Fields[14].Type = "string"
+	MATCHERSMatcherDoc.Fields[14].Note = ""
+	MATCHERSMatcherDoc.Fields[14].Description = "Expect is the verdict that counts as a match for an llm matcher.\nDefaults to \"yes\"."
+	MATCHERSMatcherDoc.Fields[14].Comments[encoder.LineComment] = "Expect is the verdict that counts as a match for an llm matcher."
+	MATCHERSMatcherDoc.Fields[15].Name = "options"
+	MATCHERSMatcherDoc.Fields[15].Type = "[]string"
+	MATCHERSMatcherDoc.Fields[15].Note = ""
+	MATCHERSMatcherDoc.Fields[15].Description = "Options restricts the model to a fixed set of verdicts for an llm\nmatcher. Defaults to yes/no."
+	MATCHERSMatcherDoc.Fields[15].Comments[encoder.LineComment] = "Options restricts the model to a fixed set of verdicts for an llm"
+	MATCHERSMatcherDoc.Fields[16].Name = "min-confidence"
+	MATCHERSMatcherDoc.Fields[16].Type = "float64"
+	MATCHERSMatcherDoc.Fields[16].Note = ""
+	MATCHERSMatcherDoc.Fields[16].Description = "MinConfidence is the minimum confidence (0-1) an llm verdict needs to\ncount as a match. Defaults to 0."
+	MATCHERSMatcherDoc.Fields[16].Comments[encoder.LineComment] = "MinConfidence is the minimum confidence (0-1) an llm verdict needs to"
+	MATCHERSMatcherDoc.Fields[17].Name = "inputs"
+	MATCHERSMatcherDoc.Fields[17].Type = "[]string"
 	MATCHERSMatcherDoc.Fields[17].Note = ""
-	MATCHERSMatcherDoc.Fields[17].Description = "MaxInputTokens caps how much of the response part is sent to the model\n   for an llm matcher, as an approximate token count."
-	MATCHERSMatcherDoc.Fields[17].Comments[encoder.LineComment] = "   MaxInputTokens caps how much of the response part is sent to the model"
-	MATCHERSMatcherDoc.Fields[18].Name = "allow-sole"
-	MATCHERSMatcherDoc.Fields[18].Type = "bool"
+	MATCHERSMatcherDoc.Fields[17].Description = "Inputs compares several responses instead of a single part, for\nchecks that are about the difference between responses (blind\nboolean injection, user enumeration, IDOR). Each entry is resolved\nagainst the runtime values, so {{body_1}} and {{body_2}} work with\nreq-condition, and each response is framed separately for the model.\nPart is ignored when Inputs is set."
+	MATCHERSMatcherDoc.Fields[17].Comments[encoder.LineComment] = "Inputs compares several responses instead of a single part, for"
+
+	MATCHERSMatcherDoc.Fields[17].AddExample("", []string{"{{body_1}}", "{{body_2}}"})
+	MATCHERSMatcherDoc.Fields[18].Name = "max-input-tokens"
+	MATCHERSMatcherDoc.Fields[18].Type = "int"
 	MATCHERSMatcherDoc.Fields[18].Note = ""
-	MATCHERSMatcherDoc.Fields[18].Description = "AllowSole permits an llm matcher to be the only matcher on a high or\ncritical template. Without it such a template is rejected, so a model is\nnever the sole arbiter of a severe finding by accident."
-	MATCHERSMatcherDoc.Fields[18].Comments[encoder.LineComment] = "AllowSole permits an llm matcher to be the only matcher on a high or"
-	MATCHERSMatcherDoc.Fields[19].Name = "encoding"
-	MATCHERSMatcherDoc.Fields[19].Type = "string"
+	MATCHERSMatcherDoc.Fields[18].Description = "MaxInputTokens caps how much of the response part is sent to the model\n   for an llm matcher, as an approximate token count."
+	MATCHERSMatcherDoc.Fields[18].Comments[encoder.LineComment] = "   MaxInputTokens caps how much of the response part is sent to the model"
+	MATCHERSMatcherDoc.Fields[19].Name = "allow-sole"
+	MATCHERSMatcherDoc.Fields[19].Type = "bool"
 	MATCHERSMatcherDoc.Fields[19].Note = ""
-	MATCHERSMatcherDoc.Fields[19].Description = "Encoding specifies the encoding for the words field if any."
-	MATCHERSMatcherDoc.Fields[19].Comments[encoder.LineComment] = "Encoding specifies the encoding for the words field if any."
-	MATCHERSMatcherDoc.Fields[19].Values = []string{
+	MATCHERSMatcherDoc.Fields[19].Description = "AllowSole permits an llm matcher to be the only matcher on a high or\ncritical template. Without it such a template is rejected, so a model is\nnever the sole arbiter of a severe finding by accident."
+	MATCHERSMatcherDoc.Fields[19].Comments[encoder.LineComment] = "AllowSole permits an llm matcher to be the only matcher on a high or"
+	MATCHERSMatcherDoc.Fields[20].Name = "encoding"
+	MATCHERSMatcherDoc.Fields[20].Type = "string"
+	MATCHERSMatcherDoc.Fields[20].Note = ""
+	MATCHERSMatcherDoc.Fields[20].Description = "Encoding specifies the encoding for the words field if any."
+	MATCHERSMatcherDoc.Fields[20].Comments[encoder.LineComment] = "Encoding specifies the encoding for the words field if any."
+	MATCHERSMatcherDoc.Fields[20].Values = []string{
 		"hex",
 	}
-	MATCHERSMatcherDoc.Fields[20].Name = "case-insensitive"
-	MATCHERSMatcherDoc.Fields[20].Type = "bool"
-	MATCHERSMatcherDoc.Fields[20].Note = ""
-	MATCHERSMatcherDoc.Fields[20].Description = "CaseInsensitive enables case-insensitive matches. Default is false."
-	MATCHERSMatcherDoc.Fields[20].Comments[encoder.LineComment] = "CaseInsensitive enables case-insensitive matches. Default is false."
-	MATCHERSMatcherDoc.Fields[20].Values = []string{
-		"false",
-		"true",
-	}
-	MATCHERSMatcherDoc.Fields[21].Name = "match-all"
+	MATCHERSMatcherDoc.Fields[21].Name = "case-insensitive"
 	MATCHERSMatcherDoc.Fields[21].Type = "bool"
 	MATCHERSMatcherDoc.Fields[21].Note = ""
-	MATCHERSMatcherDoc.Fields[21].Description = "MatchAll enables matching for all matcher values. Default is false."
-	MATCHERSMatcherDoc.Fields[21].Comments[encoder.LineComment] = "MatchAll enables matching for all matcher values. Default is false."
+	MATCHERSMatcherDoc.Fields[21].Description = "CaseInsensitive enables case-insensitive matches. Default is false."
+	MATCHERSMatcherDoc.Fields[21].Comments[encoder.LineComment] = "CaseInsensitive enables case-insensitive matches. Default is false."
 	MATCHERSMatcherDoc.Fields[21].Values = []string{
 		"false",
 		"true",
 	}
-	MATCHERSMatcherDoc.Fields[22].Name = "internal"
+	MATCHERSMatcherDoc.Fields[22].Name = "match-all"
 	MATCHERSMatcherDoc.Fields[22].Type = "bool"
 	MATCHERSMatcherDoc.Fields[22].Note = ""
-	MATCHERSMatcherDoc.Fields[22].Description = "description: |\n  Internal when true hides the matcher from output. Default is false.\n It is meant to be used in multiprotocol / flow templates to create internal matcher condition without printing it in output.\n or other similar use cases.\n values:\n   - false\n   - true"
-	MATCHERSMatcherDoc.Fields[22].Comments[encoder.LineComment] = " description: |"
+	MATCHERSMatcherDoc.Fields[22].Description = "MatchAll enables matching for all matcher values. Default is false."
+	MATCHERSMatcherDoc.Fields[22].Comments[encoder.LineComment] = "MatchAll enables matching for all matcher values. Default is false."
+	MATCHERSMatcherDoc.Fields[22].Values = []string{
+		"false",
+		"true",
+	}
+	MATCHERSMatcherDoc.Fields[23].Name = "internal"
+	MATCHERSMatcherDoc.Fields[23].Type = "bool"
+	MATCHERSMatcherDoc.Fields[23].Note = ""
+	MATCHERSMatcherDoc.Fields[23].Description = "description: |\n  Internal when true hides the matcher from output. Default is false.\n It is meant to be used in multiprotocol / flow templates to create internal matcher condition without printing it in output.\n or other similar use cases.\n values:\n   - false\n   - true"
+	MATCHERSMatcherDoc.Fields[23].Comments[encoder.LineComment] = " description: |"
 
 	MatcherTypeHolderDoc.Type = "MatcherTypeHolder"
 	MatcherTypeHolderDoc.Comments[encoder.LineComment] = " MatcherTypeHolder is used to hold internal type of the matcher"
@@ -1187,6 +1204,7 @@ func init() {
 		"size",
 		"dsl",
 		"xpath",
+		"cidr",
 		"llm",
 	}
 
@@ -1719,6 +1737,14 @@ func init() {
 			Key:   "resp,body,data",
 			Value: "Headless response received from client (default)",
 		},
+		{
+			Key:   "header,all_headers",
+			Value: "Headless response headers",
+		},
+		{
+			Key:   "status_code",
+			Value: "Status code received from the server",
+		},
 	}
 	HEADLESSRequestDoc.Fields = make([]encoder.Doc, 10)
 	HEADLESSRequestDoc.Fields[0].Name = "id"
@@ -2201,6 +2227,71 @@ func init() {
 	WHOISRequestDoc.Fields[2].Description = "description: |\n 	 Optional WHOIS server URL.\n\n 	 If present, specifies the WHOIS server to execute the Request on.\n   Otherwise, nil enables bootstrapping"
 	WHOISRequestDoc.Fields[2].Comments[encoder.LineComment] = " description: |"
 
+	NTPRequestDoc.Type = "ntp.Request"
+	NTPRequestDoc.Comments[encoder.LineComment] = " Request is a request for the NTP protocol"
+	NTPRequestDoc.Description = "Request is a request for the NTP protocol"
+	NTPRequestDoc.AppearsIn = []encoder.Appearance{
+		{
+			TypeName:  "Template",
+			FieldName: "ntp",
+		},
+	}
+	NTPRequestDoc.PartDefinitions = []encoder.KeyValue{
+		{
+			Key:   "type",
+			Value: "Type is the type of request made",
+		},
+		{
+			Key:   "host",
+			Value: "Host is the input to the template",
+		},
+		{
+			Key:   "request",
+			Value: "NTP request dump",
+		},
+		{
+			Key:   "response",
+			Value: "NTP server response data",
+		},
+		{
+			Key:   "version",
+			Value: "NTP protocol version reported by the server",
+		},
+		{
+			Key:   "stratum",
+			Value: "NTP server stratum",
+		},
+		{
+			Key:   "refid",
+			Value: "NTP server reference identifier",
+		},
+		{
+			Key:   "delay",
+			Value: "Round-trip network delay in seconds",
+		},
+		{
+			Key:   "offset",
+			Value: "Clock offset between server and client in seconds",
+		},
+		{
+			Key:   "duration",
+			Value: "Protocol operation duration in seconds",
+		},
+	}
+	NTPRequestDoc.Fields = make([]encoder.Doc, 2)
+	NTPRequestDoc.Fields[0].Name = "id"
+	NTPRequestDoc.Fields[0].Type = "string"
+	NTPRequestDoc.Fields[0].Note = ""
+	NTPRequestDoc.Fields[0].Description = "ID is the optional id of the request"
+	NTPRequestDoc.Fields[0].Comments[encoder.LineComment] = " ID is the optional id of the request"
+	NTPRequestDoc.Fields[1].Name = "address"
+	NTPRequestDoc.Fields[1].Type = "string"
+	NTPRequestDoc.Fields[1].Note = ""
+	NTPRequestDoc.Fields[1].Description = "Address contains the address for the request.\n\nIf not specified, the target input is used with the default NTP port 123."
+	NTPRequestDoc.Fields[1].Comments[encoder.LineComment] = "Address contains the address for the request."
+
+	NTPRequestDoc.Fields[1].AddExample("", "{{Host}}:{{Port}}")
+
 	CODERequestDoc.Type = "code.Request"
 	CODERequestDoc.Comments[encoder.LineComment] = " Request is a request for the SSL protocol"
 	CODERequestDoc.Description = "Request is a request for the SSL protocol"
@@ -2390,6 +2481,7 @@ func GetTemplateDoc() *encoder.FileDoc {
 			&WEBSOCKETRequestDoc,
 			&WEBSOCKETInputDoc,
 			&WHOISRequestDoc,
+			&NTPRequestDoc,
 			&CODERequestDoc,
 			&JAVASCRIPTRequestDoc,
 			&HTTPSignatureTypeHolderDoc,

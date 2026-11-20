@@ -41,6 +41,8 @@ const (
 	CodeProtocol
 	// name: js
 	JavascriptProtocol
+	// name:ntp
+	NTPProtocol
 	limit
 	InvalidProtocol
 )
@@ -57,6 +59,7 @@ var protocolMappings = map[ProtocolType]string{
 	SSLProtocol:        "ssl",
 	WebsocketProtocol:  "websocket",
 	WHOISProtocol:      "whois",
+	NTPProtocol:        "ntp",
 	CodeProtocol:       "code",
 	JavascriptProtocol: "javascript",
 }

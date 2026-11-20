@@ -45,6 +45,8 @@ func (request *Request) Match(data map[string]interface{}, matcher *matchers.Mat
 		return matcher.Result(matcher.MatchDSLWithOptions(data, request.options.GetOptions())), []string{}
 	case matchers.XPathMatcher:
 		return matcher.Result(matcher.MatchXPath(types.ToString(item))), []string{}
+	case matchers.CIDRMatcher:
+		return matcher.ResultWithMatchedSnippet(matcher.MatchCIDR(types.ToString(item)))
 	case matchers.LLMMatcher:
 		return protocols.MatchLLM(data, matcher, types.ToString(item), request.options)
 	}

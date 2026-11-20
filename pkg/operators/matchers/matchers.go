@@ -1,6 +1,7 @@
 package matchers
 
 import (
+	"net/netip"
 	"regexp"
 	"strings"
 
@@ -105,6 +106,15 @@ type Matcher struct {
 	//       []string{"//a[@target=\"_blank\"]"}
 	XPath []string `yaml:"xpath,omitempty" json:"xpath,omitempty" jsonschema:"title=xpath queries to match in response,description=xpath are the XPath queries that will be evaluated against the response part of nuclei matching rules"`
 	// description: |
+	//   CIDR contains the CIDR ranges that the response part IP address must belong to.
+	//   The matched part is parsed as an IP address (or scanned for IP addresses) and
+	//   the matcher fires when any of them falls inside one of the given ranges.
+	// examples:
+	//   - name: Match for private IPv4 ranges
+	//     value: >
+	//       []string{"10.0.0.0/8", "192.168.0.0/16"}
+	CIDR []string `yaml:"cidr,omitempty" json:"cidr,omitempty" jsonschema:"title=cidr ranges to match in response,description=CIDR contains the CIDR ranges that the response part IP address must belong to"`
+	// description: |
 	//   Prompt is the natural-language question for an llm matcher. The model
 	//   judges the selected response part and returns a verdict; the matcher
 	//   fires when the verdict equals Expect with at least MinConfidence.
@@ -180,6 +190,7 @@ type Matcher struct {
 	binaryDecoded []string
 	regexCompiled []*regexp.Regexp
 	dslCompiled   []*govaluate.EvaluableExpression
+	cidrParsed    []netip.Prefix
 	llmClient     LLMClient
 }
 

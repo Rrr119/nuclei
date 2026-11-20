@@ -57,6 +57,9 @@ func (matcher *Matcher) Validate() error {
 	case XPathMatcher:
 		requiredField, valueCount = "xpath", len(matcher.XPath)
 		expectedFields = append(commonExpectedFields, "XPath", "Part")
+	case CIDRMatcher:
+		requiredField, valueCount = "cidr", len(matcher.CIDR)
+		expectedFields = append(commonExpectedFields, "CIDR", "Part")
 	case LLMMatcher:
 		requiredField, valueCount = "prompt", len(matcher.Prompt)
 		expectedFields = append(commonExpectedFields, "Prompt", "Expect", "Options", "MinConfidence", "MaxInputTokens", "AllowSole", "Part", "Inputs")

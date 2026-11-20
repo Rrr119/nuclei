@@ -1,7 +1,9 @@
 package matchers
 
 import (
+	"net/netip"
 	"os"
+	"regexp"
 	"strings"
 
 	"github.com/antchfx/htmlquery"
@@ -200,6 +202,82 @@ func (matcher *Matcher) MatchBinary(corpus string) (bool, []string) {
 // MatchDSL matches on a generic map result
 func (matcher *Matcher) MatchDSL(data map[string]interface{}) bool {
 	return matcher.MatchDSLWithOptions(data, nil)
+}
+
+// ipCandidatePattern finds IP-shaped tokens when the corpus is not a plain IP.
+var ipCandidatePattern = regexp.MustCompile(`(?:\d{1,3}\.){3}\d{1,3}|(?:[0-9a-fA-F]{0,4}:){2,}[0-9a-fA-F]{0,4}(?:%\w+)?`)
+
+// MatchCIDR matches the corpus IP address(es) against the matcher CIDR ranges.
+// The corpus is first parsed as a single IP address; if that fails, IP-shaped
+// tokens are extracted from it and checked individually.
+func (matcher *Matcher) MatchCIDR(corpus string) (bool, []string) {
+	candidates := cidrCandidateIPs(corpus)
+	if len(candidates) == 0 {
+		return false, []string{}
+	}
+
+	var matched []string
+	for i, prefix := range matcher.cidrParsed {
+		var prefixHits []string
+		for _, ip := range candidates {
+			if prefix.Contains(ip) {
+				prefixHits = append(prefixHits, ip.String())
+			}
+		}
+		if len(prefixHits) == 0 {
+			// If we are in an AND request and a match failed,
+			// return false as the AND condition fails on any single mismatch.
+			switch matcher.condition {
+			case ANDCondition:
+				return false, []string{}
+			case ORCondition:
+				continue
+			}
+		}
+
+		// If the condition was an OR, return on the first match.
+		if matcher.condition == ORCondition && !matcher.MatchAll {
+			return true, prefixHits
+		}
+		matched = append(matched, prefixHits...)
+
+		// If we are at the end of the ranges, return with true
+		if len(matcher.cidrParsed)-1 == i && !matcher.MatchAll {
+			return true, matched
+		}
+	}
+	if len(matched) > 0 && matcher.MatchAll {
+		return true, matched
+	}
+	return false, []string{}
+}
+
+// cidrCandidateIPs returns the IP addresses to test against CIDR ranges. A
+// corpus that is itself an IP yields exactly one candidate; otherwise all
+// IP-shaped tokens in the corpus are candidates.
+func cidrCandidateIPs(corpus string) []netip.Addr {
+	trimmed := strings.TrimSpace(corpus)
+	if trimmed == "" {
+		return nil
+	}
+	if addr, err := netip.ParseAddr(trimmed); err == nil {
+		return []netip.Addr{addr}
+	}
+
+	var candidates []netip.Addr
+	seen := make(map[netip.Addr]struct{})
+	for _, token := range ipCandidatePattern.FindAllString(corpus, -1) {
+		addr, err := netip.ParseAddr(token)
+		if err != nil {
+			continue
+		}
+		if _, ok := seen[addr]; ok {
+			continue
+		}
+		seen[addr] = struct{}{}
+		candidates = append(candidates, addr)
+	}
+	return candidates
 }
 
 // MatchDSLWithOptions evaluates cached expressions with the current scan's policy.

@@ -27,6 +27,8 @@ const (
 	DSLMatcher
 	// name:xpath
 	XPathMatcher
+	// name:cidr
+	CIDRMatcher
 	// name:llm
 	LLMMatcher
 	limit
@@ -41,6 +43,7 @@ var MatcherTypes = map[MatcherType]string{
 	BinaryMatcher: "binary",
 	DSLMatcher:    "dsl",
 	XPathMatcher:  "xpath",
+	CIDRMatcher:   "cidr",
 	LLMMatcher:    "llm",
 }
 

@@ -18,6 +18,7 @@ import (
 	"github.com/projectdiscovery/nuclei/v3/pkg/protocols/http"
 	"github.com/projectdiscovery/nuclei/v3/pkg/protocols/javascript"
 	"github.com/projectdiscovery/nuclei/v3/pkg/protocols/network"
+	"github.com/projectdiscovery/nuclei/v3/pkg/protocols/ntp"
 	"github.com/projectdiscovery/nuclei/v3/pkg/protocols/ssl"
 	"github.com/projectdiscovery/nuclei/v3/pkg/protocols/websocket"
 	"github.com/projectdiscovery/nuclei/v3/pkg/protocols/whois"
@@ -113,6 +114,9 @@ type Template struct {
 	//   WHOIS contains the WHOIS request to make in the template.
 	RequestsWHOIS []*whois.Request `yaml:"whois,omitempty" json:"whois,omitempty" jsonschema:"title=whois requests to make,description=WHOIS requests to make for the template"`
 	// description: |
+	//   NTP contains the NTP request to make in the template.
+	RequestsNTP []*ntp.Request `yaml:"ntp,omitempty" json:"ntp,omitempty" jsonschema:"title=ntp requests to make,description=NTP requests to make for the template"`
+	// description: |
 	//   Code contains code snippets.
 	RequestsCode []*code.Request `yaml:"code,omitempty" json:"code,omitempty" jsonschema:"title=code snippets to make,description=Code snippets"`
 	// description: |
@@ -204,6 +208,8 @@ func (template *Template) Type() types.ProtocolType {
 		return types.WebsocketProtocol
 	case template.HasWHOISRequest():
 		return types.WHOISProtocol
+	case template.HasNTPRequest():
+		return types.NTPProtocol
 	case template.HasCodeRequest():
 		return types.CodeProtocol
 	case template.HasJavascriptRequest():
@@ -317,6 +323,14 @@ func (template *Template) validateAllRequestIDs() {
 
 	if template.HasWHOISRequest(1) {
 		for i, req := range template.RequestsWHOIS {
+			if req.ID == "" {
+				req.ID = req.Type().String() + "_" + strconv.Itoa(i+1)
+			}
+		}
+	}
+
+	if template.HasNTPRequest(1) {
+		for i, req := range template.RequestsNTP {
 			if req.ID == "" {
 				req.ID = req.Type().String() + "_" + strconv.Itoa(i+1)
 			}
@@ -547,6 +561,8 @@ func (template *Template) addRequestsToQueue(keys ...string) {
 			template.RequestsQueue = append(template.RequestsQueue, template.convertRequestToProtocolsRequest(template.RequestsWebsocket)...)
 		case types.WHOISProtocol.String():
 			template.RequestsQueue = append(template.RequestsQueue, template.convertRequestToProtocolsRequest(template.RequestsWHOIS)...)
+		case types.NTPProtocol.String():
+			template.RequestsQueue = append(template.RequestsQueue, template.convertRequestToProtocolsRequest(template.RequestsNTP)...)
 		case types.CodeProtocol.String():
 			template.RequestsQueue = append(template.RequestsQueue, template.convertRequestToProtocolsRequest(template.RequestsCode)...)
 		case types.JavascriptProtocol.String():
@@ -567,7 +583,8 @@ func (template *Template) hasMultipleRequests() bool {
 		len(template.RequestsHTTP) + len(template.RequestsHeadless) +
 		len(template.RequestsNetwork) + len(template.RequestsSSL) +
 		len(template.RequestsWebsocket) + len(template.RequestsWHOIS) +
-		len(template.RequestsCode) + len(template.RequestsJavascript)
+		len(template.RequestsNTP) + len(template.RequestsCode) +
+		len(template.RequestsJavascript)
 	return counter > 1
 }
 

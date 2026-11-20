@@ -1,0 +1,15 @@
+id: ntp-cidr-matcher-example
+
+info:
+  name: test template for NTP with cidr matcher
+  author: pdteam
+  severity: info
+
+ntp:
+  - address: "{{Host}}:{{Port}}"
+
+    matchers:
+      - type: cidr
+        part: refid
+        cidr:
+          - "10.0.0.0/8"

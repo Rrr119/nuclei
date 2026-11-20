@@ -134,6 +134,15 @@ func updateRequestOptions(template *Template) {
 		template.RequestsWHOIS[i] = rCopy
 		requests[r] = rCopy
 	}
+	for i, r := range template.RequestsNTP {
+		if i == 0 {
+			template.RequestsNTP = append(template.RequestsNTP[:0:0], template.RequestsNTP...)
+		}
+		rCopy := cloneProtocolRequest(r)
+		rCopy.UpdateOptions(template.Options)
+		template.RequestsNTP[i] = rCopy
+		requests[r] = rCopy
+	}
 	for i, r := range template.RequestsWebsocket {
 		if i == 0 {
 			template.RequestsWebsocket = append(template.RequestsWebsocket[:0:0], template.RequestsWebsocket...)
@@ -555,6 +564,7 @@ func (template *Template) Requests() int {
 		len(template.RequestsSSL) +
 		len(template.RequestsWebsocket) +
 		len(template.RequestsWHOIS) +
+		len(template.RequestsNTP) +
 		len(template.RequestsCode) +
 		len(template.RequestsJavascript)
 }
@@ -611,6 +621,9 @@ func (template *Template) compileProtocolRequests(options *protocols.ExecutorOpt
 		}
 		if template.HasWHOISRequest() {
 			requests = append(requests, template.convertRequestToProtocolsRequest(template.RequestsWHOIS)...)
+		}
+		if template.HasNTPRequest() {
+			requests = append(requests, template.convertRequestToProtocolsRequest(template.RequestsNTP)...)
 		}
 		if template.HasCodeRequest() && caps.Has(CapabilityCode) {
 			requests = append(requests, template.convertRequestToProtocolsRequest(template.RequestsCode)...)

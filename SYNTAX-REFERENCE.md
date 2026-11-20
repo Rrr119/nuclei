@@ -321,6 +321,19 @@ WHOIS contains the WHOIS request to make in the template.
 
 <div class="dd">
 
+<code>ntp</code>  <i>[]<a href="#ntprequest">ntp.Request</a></i>
+
+</div>
+<div class="dt">
+
+NTP contains the NTP request to make in the template.
+
+</div>
+
+<hr />
+
+<div class="dd">
+
 <code>code</code>  <i>[]<a href="#coderequest">code.Request</a></i>
 
 </div>
@@ -2502,6 +2515,34 @@ xpath:
 
 <div class="dd">
 
+<code>cidr</code>  <i>[]string</i>
+
+</div>
+<div class="dt">
+
+CIDR contains the CIDR ranges that the response part IP address must belong to.
+The matched part is parsed as an IP address (or scanned for IP addresses) and
+the matcher fires when any of them falls inside one of the given ranges.
+
+
+
+Examples:
+
+
+```yaml
+# Match for private IPv4 ranges
+cidr:
+    - 10.0.0.0/8
+    - 192.168.0.0/16
+```
+
+
+</div>
+
+<hr />
+
+<div class="dd">
+
 <code>prompt</code>  <i>string</i>
 
 </div>
@@ -2751,6 +2792,8 @@ Enum Values:
   - <code>dsl</code>
 
   - <code>xpath</code>
+
+  - <code>cidr</code>
 
   - <code>llm</code>
 </div>
@@ -4582,6 +4625,74 @@ description: |
 
  	 If present, specifies the WHOIS server to execute the Request on.
    Otherwise, nil enables bootstrapping
+
+</div>
+
+<hr />
+
+
+
+
+
+## ntp.Request
+Request is a request for the NTP protocol
+
+Appears in:
+
+
+- <code><a href="#template">Template</a>.ntp</code>
+
+
+
+Part Definitions: 
+
+
+- <code>type</code> - Type is the type of request made
+- <code>host</code> - Host is the input to the template
+- <code>request</code> - NTP request dump
+- <code>response</code> - NTP server response data
+- <code>version</code> - NTP protocol version reported by the server
+- <code>stratum</code> - NTP server stratum
+- <code>refid</code> - NTP server reference identifier
+- <code>delay</code> - Round-trip network delay in seconds
+- <code>offset</code> - Clock offset between server and client in seconds
+- <code>duration</code> - Protocol operation duration in seconds
+
+<hr />
+
+<div class="dd">
+
+<code>id</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+ID is the optional id of the request
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>address</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Address contains the address for the request.
+
+If not specified, the target input is used with the default NTP port 123.
+
+
+
+Examples:
+
+
+```yaml
+address: '{{Host}}:{{Port}}'
+```
+
 
 </div>
 

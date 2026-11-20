@@ -264,6 +264,9 @@ func tryCollectConditionsMatchinfo(template *Template) map[string]interface{} {
 	for _, req := range template.RequestsWHOIS {
 		matcherTypes = append(matcherTypes, collectMatcherTypes(req.Matchers)...)
 	}
+	for _, req := range template.RequestsNTP {
+		matcherTypes = append(matcherTypes, collectMatcherTypes(req.Matchers)...)
+	}
 	for _, req := range template.RequestsWebsocket {
 		matcherTypes = append(matcherTypes, collectMatcherTypes(req.Matchers)...)
 	}
@@ -291,6 +294,9 @@ func tryCollectConditionsMatchinfo(template *Template) map[string]interface{} {
 		extractorTypes = append(extractorTypes, collectExtractorTypes(req.Extractors)...)
 	}
 	for _, req := range template.RequestsWHOIS {
+		extractorTypes = append(extractorTypes, collectExtractorTypes(req.Extractors)...)
+	}
+	for _, req := range template.RequestsNTP {
 		extractorTypes = append(extractorTypes, collectExtractorTypes(req.Extractors)...)
 	}
 	for _, req := range template.RequestsWebsocket {

@@ -1175,6 +1175,14 @@
           "title": "xpath queries to match in response",
           "description": "xpath are the XPath queries that will be evaluated against the response part of nuclei matching rules"
         },
+        "cidr": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "title": "cidr ranges to match in response",
+          "description": "CIDR contains the CIDR ranges that the response part IP address must belong to"
+        },
         "prompt": {
           "type": "string",
           "title": "llm prompt",
@@ -1256,6 +1264,7 @@
         "size",
         "dsl",
         "xpath",
+        "cidr",
         "llm"
       ],
       "title": "type of the matcher",
@@ -1544,6 +1553,47 @@
       "additionalProperties": false,
       "type": "object"
     },
+    "ntp.Request": {
+      "properties": {
+        "matchers": {
+          "items": {
+            "$ref": "#/$defs/matchers.Matcher"
+          },
+          "type": "array",
+          "title": "matchers to run on response",
+          "description": "Detection mechanism to identify whether the request was successful by doing pattern matching"
+        },
+        "extractors": {
+          "items": {
+            "$ref": "#/$defs/extractors.Extractor"
+          },
+          "type": "array",
+          "title": "extractors to run on response",
+          "description": "Extractors contains the extraction mechanism for the request to identify and extract parts of the response"
+        },
+        "matchers-condition": {
+          "type": "string",
+          "enum": [
+            "and",
+            "or"
+          ],
+          "title": "condition between the matchers",
+          "description": "Conditions between the matchers"
+        },
+        "id": {
+          "type": "string",
+          "title": "id of the request",
+          "description": "ID of the ntp request"
+        },
+        "address": {
+          "type": "string",
+          "title": "address for the NTP request",
+          "description": "Address contains the address for the request"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
     "severity.Holder": {
       "type": "string",
       "enum": [
@@ -1776,6 +1826,14 @@
           "type": "array",
           "title": "whois requests to make",
           "description": "WHOIS requests to make for the template"
+        },
+        "ntp": {
+          "items": {
+            "$ref": "#/$defs/ntp.Request"
+          },
+          "type": "array",
+          "title": "ntp requests to make",
+          "description": "NTP requests to make for the template"
         },
         "code": {
           "items": {

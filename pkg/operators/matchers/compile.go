@@ -3,6 +3,7 @@ package matchers
 import (
 	"encoding/hex"
 	"fmt"
+	"net/netip"
 	"regexp"
 	"strings"
 
@@ -63,6 +64,15 @@ func (matcher *Matcher) CompileMatchers() error {
 		} else {
 			matcher.binaryDecoded = append(matcher.binaryDecoded, string(decoded))
 		}
+	}
+
+	// Compile and validate CIDR ranges in matcher
+	for _, value := range matcher.CIDR {
+		prefix, err := netip.ParsePrefix(strings.TrimSpace(value))
+		if err != nil {
+			return fmt.Errorf("could not parse cidr: %s", value)
+		}
+		matcher.cidrParsed = append(matcher.cidrParsed, prefix.Masked())
 	}
 
 	// Compile the dsl expressions (with shared cache)

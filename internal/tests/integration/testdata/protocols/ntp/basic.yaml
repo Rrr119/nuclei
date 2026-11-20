@@ -1,0 +1,24 @@
+id: basic-ntp-example
+
+info:
+  name: test template for NTP
+  author: pdteam
+  severity: info
+
+ntp:
+  - address: "{{Host}}:{{Port}}"
+
+    matchers:
+      - type: word
+        part: response
+        words:
+          - '"stratum":2'
+
+      - type: dsl
+        dsl:
+          - "stratum == 2 && version == 4"
+
+    extractors:
+      - type: dsl
+        dsl:
+          - "refid"

@@ -82,6 +82,8 @@ func NewFlowExecutor(requests []protocols.Request, ctx *scan.ScanContext, option
 			allprotos[templateTypes.WebsocketProtocol.String()] = append(allprotos[templateTypes.WebsocketProtocol.String()], req)
 		case templateTypes.WHOISProtocol:
 			allprotos[templateTypes.WHOISProtocol.String()] = append(allprotos[templateTypes.WHOISProtocol.String()], req)
+		case templateTypes.NTPProtocol:
+			allprotos[templateTypes.NTPProtocol.String()] = append(allprotos[templateTypes.NTPProtocol.String()], req)
 		case templateTypes.CodeProtocol:
 			allprotos[templateTypes.CodeProtocol.String()] = append(allprotos[templateTypes.CodeProtocol.String()], req)
 		case templateTypes.JavascriptProtocol:
